@@ -4,7 +4,7 @@
     每次会改变编译产物的构建前，先运行 tools\Set-HarnessVersion.ps1 -Bump patch。
   -->
   <PropertyGroup>
-    <Version>0.1.10</Version>
+    <Version>0.1.11</Version>
     <Product>StudentAge Harness</Product>
     <Authors>white12666</Authors>
     <Copyright>Copyright (c) 2026 white12666</Copyright>

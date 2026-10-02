@@ -918,8 +918,12 @@ function Invoke-HarnessRun {
                 if (-not $gameProcess.HasExited) { Stop-Process -Id $gameProcess.Id -Force; $gameProcess.WaitForExit(15000) | Out-Null }
             }
             catch { }
+            $gameProcess.Dispose()
         }
         try {
+            # HasExited 变为 true 后，进程还可能在进程列表里停留片刻；立刻检查会误判游戏仍在运行而推迟恢复。
+            $exitDeadline = (Get-Date).AddSeconds(15)
+            while ((Get-Process -Name StudentAge -ErrorAction SilentlyContinue) -and (Get-Date) -lt $exitDeadline) { Start-Sleep -Milliseconds 250 }
             if (Get-Process -Name StudentAge -ErrorAction SilentlyContinue) { throw 'Game still running; recovery deferred.' }
             if (Restore-RegistrySnapshot $snapshotPath) {
                 Remove-Item -LiteralPath $pendingPath -Force -ErrorAction SilentlyContinue
