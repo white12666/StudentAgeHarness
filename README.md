@@ -7,7 +7,7 @@
 ## 环境
 
 - Windows 10/11、PowerShell 5.1 或更高版本。
-- Steam 版学生时代，已安装 **BepInEx 5（Mono）与 Doorstop**。不适用 BepInEx 6 / IL2CPP。
+- Steam 版学生时代，已安装 **BepInEx 5**。
 - Steam 已正常启动并登录，游戏已退出；需要可渲染的桌面会话，不支持 `-batchmode -nographics`。
 - 从源码构建需要 .NET 8 SDK。运行发布包不需要 SDK。
 
