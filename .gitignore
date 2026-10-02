@@ -1,0 +1,8 @@
+bin/
+obj/
+dist/
+.vs/
+*.user
+*.suo
+# sah run 的输出目录（每次运行一个隔离目录）
+.harness/

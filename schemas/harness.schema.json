@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:studentage-harness:config:1",
+  "title": "harness.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "gameRoot": { "type": "string", "description": "auto, or a game installation path" },
+    "runsDir": { "type": "string" },
+    "plugins": { "$ref": "#/$defs/paths" },
+    "dependencies": { "$ref": "#/$defs/paths" },
+    "patchers": { "$ref": "#/$defs/paths" },
+    "configFiles": { "$ref": "#/$defs/paths" },
+    "packs": { "$ref": "#/$defs/paths" },
+    "expectPlugins": { "$ref": "#/$defs/paths" },
+    "scenarios": { "$ref": "#/$defs/paths" },
+    "resolution": { "type": "string", "pattern": "^[0-9]{3,5}x[0-9]{3,5}$", "default": "1920x1080" },
+    "window": { "enum": ["visible", "background"], "default": "visible", "description": "visible shows the window (it may be covered or minimized); background parks it below the desktop" },
+    "mute": { "type": "boolean", "default": true },
+    "timeoutSec": { "type": "integer", "minimum": 1, "default": 600 },
+    "startupTimeoutSec": { "type": "integer", "minimum": 1, "default": 180 },
+    "strict": { "type": "boolean", "default": false },
+    "redactPaths": { "type": "boolean", "default": true },
+    "keepRuns": { "type": "integer", "minimum": 0, "default": 20, "description": "Only used by explicit clean command; run never deletes old runs." },
+    "workshopMods": {
+      "oneOf": [
+        { "enum": ["none", "inherit"] },
+        { "type": "array", "items": { "oneOf": [
+          { "type": "string", "pattern": "^[1-9][0-9]*$" },
+          { "type": "integer", "minimum": 1 }
+        ] } }
+      ],
+      "default": []
+    }
+  },
+  "$defs": {
+    "paths": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  }
+}

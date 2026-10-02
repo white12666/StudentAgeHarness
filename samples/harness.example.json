@@ -1,0 +1,13 @@
+{
+  "$schema": "../schemas/harness.schema.json",
+  "plugins": [],
+  "packs": ["ExamplePack/bin/Release/StudentAgeHarness.ExamplePack.dll"],
+  "scenarios": ["startup", "tag:sample"],
+  "window": "visible",
+  "resolution": "1920x1080",
+  "timeoutSec": 600,
+  "startupTimeoutSec": 180,
+  "strict": false,
+  "redactPaths": true,
+  "workshopMods": []
+}

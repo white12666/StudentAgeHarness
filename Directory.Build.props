@@ -1,0 +1,31 @@
+<Project>
+  <!--
+    唯一的版本号声明。插件版本（BepInPlugin）、程序集版本和报告里的 harness.version 都从这里生成。
+    每次会改变编译产物的构建前，先运行 tools\Set-HarnessVersion.ps1 -Bump patch。
+  -->
+  <PropertyGroup>
+    <Version>0.1.10</Version>
+    <Product>StudentAge Harness</Product>
+    <Authors>white12666</Authors>
+    <Copyright>Copyright (c) 2026 white12666</Copyright>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <Deterministic>true</Deterministic>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <!-- 游戏目录：优先 -p:GameRoot=...，其次环境变量 STUDENTAGE_GAME_ROOT，最后假定仓库位于 <游戏目录>\_modsrc\<仓库>。 -->
+  <PropertyGroup>
+    <GameRoot Condition="'$(GameRoot)' == '' and '$(STUDENTAGE_GAME_ROOT)' != ''">$(STUDENTAGE_GAME_ROOT)</GameRoot>
+    <GameRoot Condition="'$(GameRoot)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..'))</GameRoot>
+    <ManagedDir>$(GameRoot)\StudentAge_Data\Managed</ManagedDir>
+    <BepInExCore>$(GameRoot)\BepInEx\core</BepInExCore>
+  </PropertyGroup>
+
+  <Target Name="CheckStudentAgeGameRoot" BeforeTargets="ResolveAssemblyReferences"
+          Condition="!Exists('$(ManagedDir)\Assembly-CSharp.dll')">
+    <Error Text="找不到学生时代的 Managed 目录：$(ManagedDir)。请设置环境变量 STUDENTAGE_GAME_ROOT，或用 -p:GameRoot=... 指向游戏安装目录。" />
+  </Target>
+</Project>

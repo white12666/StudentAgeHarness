@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    示例场景包。场景包只需要引用 StudentAgeHarness.Core；要访问自己 mod 或游戏的类型时，再引用对应程序集（Private=false）。
+    仓库外的 mod 项目把 ProjectReference 换成 Reference + HintPath 指向发布包里的 plugin\StudentAgeHarness.Core.dll。
+  -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>StudentAgeHarness.ExamplePack</AssemblyName>
+    <RootNamespace>ExamplePack</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\StudentAgeHarness.Core\StudentAgeHarness.Core.csproj"><Private>false</Private></ProjectReference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(ManagedDir)\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Unity.InputSystem"><HintPath>$(ManagedDir)\Unity.InputSystem.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>

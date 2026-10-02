@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:studentage-harness:report:2",
+  "title": "StudentAge Harness report v2",
+  "type": "object",
+  "required": ["schema", "run", "harness", "environment", "isolation", "scenarios", "findings", "summary", "extensions"],
+  "properties": {
+    "schema": { "const": "studentage-harness-report/2" },
+    "run": {
+      "type": "object",
+      "required": ["id", "startedAtUtc", "finishedAtUtc", "durationSec", "aborted", "abortReason", "window", "requestedScenarios", "selectedScenarios", "screenshots", "artifacts"],
+      "properties": {
+        "id": { "type": "string" },
+        "startedAtUtc": { "type": ["string", "null"] },
+        "finishedAtUtc": { "type": ["string", "null"] },
+        "durationSec": { "type": "number", "minimum": 0 },
+        "aborted": { "type": "boolean" },
+        "abortReason": { "$ref": "#/$defs/nullableString" },
+        "window": { "enum": ["visible", "background"] },
+        "timeoutSec": { "type": "number", "exclusiveMinimum": 0 },
+        "requestedScenarios": { "$ref": "#/$defs/strings" },
+        "selectedScenarios": { "$ref": "#/$defs/strings" },
+        "screenshots": { "$ref": "#/$defs/artifacts" },
+        "artifacts": { "$ref": "#/$defs/artifacts" }
+      }
+    },
+    "harness": {
+      "type": "object",
+      "required": ["version", "plugin"],
+      "properties": {
+        "version": { "type": "string" },
+        "plugin": { "const": "com.studentage.harness" }
+      }
+    },
+    "environment": { "type": "object" },
+    "isolation": { "type": "object" },
+    "extensions": { "type": "object", "description": "Scenario packs own namespaced keys; values are arbitrary JSON." },
+    "scenarios": { "type": "array", "items": { "$ref": "#/$defs/scenario" } },
+    "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" } },
+    "summary": {
+      "type": "object",
+      "required": ["scenarios", "passedScenarios", "failedScenarios", "skippedScenarios", "steps", "failedSteps", "skippedSteps", "allowedSkippedSteps", "errors", "warnings", "infos", "screenshots"],
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    }
+  },
+  "$defs": {
+    "nullableString": { "type": ["string", "null"] },
+    "strings": { "type": "array", "items": { "type": "string" } },
+    "artifacts": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^(?![/\\\\]|[A-Za-z]:|.*(?:^|[/\\\\])\\.\\.(?:[/\\\\]|$)).+" }
+    },
+    "step": {
+      "type": "object",
+      "required": ["name", "status", "durationSec", "error", "screenshots", "artifacts"],
+      "properties": {
+        "name": { "type": "string" },
+        "status": { "enum": ["pending", "passed", "failed", "skipped", "skipped-allowed"] },
+        "durationSec": { "type": "number", "minimum": 0 },
+        "error": { "$ref": "#/$defs/nullableString" },
+        "screenshots": { "$ref": "#/$defs/artifacts" },
+        "artifacts": { "$ref": "#/$defs/artifacts" }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "required": ["name", "description", "pack", "tags", "status", "durationSec", "error", "skipReason", "steps"],
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "$ref": "#/$defs/nullableString" },
+        "pack": { "type": "string" },
+        "tags": { "$ref": "#/$defs/strings" },
+        "status": { "enum": ["pending", "passed", "failed", "skipped"] },
+        "durationSec": { "type": "number", "minimum": 0 },
+        "error": { "$ref": "#/$defs/nullableString" },
+        "skipReason": { "$ref": "#/$defs/nullableString" },
+        "steps": { "type": "array", "items": { "$ref": "#/$defs/step" } }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "required": ["severity", "category", "rule", "scenario", "step", "path", "message", "metrics"],
+      "properties": {
+        "severity": { "enum": ["error", "warning", "info"] },
+        "category": { "$ref": "#/$defs/nullableString" },
+        "rule": { "$ref": "#/$defs/nullableString" },
+        "scenario": { "$ref": "#/$defs/nullableString" },
+        "step": { "$ref": "#/$defs/nullableString" },
+        "path": { "$ref": "#/$defs/nullableString" },
+        "message": { "$ref": "#/$defs/nullableString" },
+        "metrics": { "type": "object" }
+      }
+    }
+  }
+}
